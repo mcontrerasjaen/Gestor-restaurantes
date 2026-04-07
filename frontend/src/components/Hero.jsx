@@ -19,13 +19,14 @@ const Hero = () => {
         setIndex((prev) => (prev + 1) % slides.length);
     };
 
-    // Si por alguna razón el array falla, devolvemos un mensaje seguro
     if (!slides[0].img) return <div className="p-10 text-slate-400 italic">Cargando visuales...</div>;
 
     return (
-        <section className="w-full">
+        /* CAMBIO 1: El contenedor padre debe ser h-full */
+        <section className="w-full h-full">
            
             <div
+                /* CAMBIO 2: h-full asegura que el div ocupe todo el panel derecho */
                 className="relative w-full h-full overflow-hidden cursor-pointer bg-slate-100 group"
                 onClick={nextSlide}
             >
@@ -34,15 +35,16 @@ const Hero = () => {
                         key={index}
                         src={slides[index].img}
                         alt="Bagá"
-                        initial={{ opacity: 0, scale: 1.05 }}
+                        initial={{ opacity: 0, scale: 1.1 }} // Un poco más de escala inicial
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.9, ease: [0.33, 1, 0.68, 1] }}
+                        transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
+                        /* CAMBIO 3: h-full y object-cover son obligatorios aquí */
                         className="w-full h-full object-cover"
                     />
                 </AnimatePresence>
 
-              
+                {/* Capa de texto y gradiente */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12">
                     <motion.div
                         key={`text-${index}`}
@@ -54,13 +56,13 @@ const Hero = () => {
                         <p className="text-[10px] font-black uppercase tracking-[0.5em] text-orange-400 mb-2">
                             {slides[index].subtitle}
                         </p>
-                        <h2 className="text-3xl md:text-4xl font-light italic font-serif">
+                        <h2 className="text-3xl md:text-5xl font-light italic font-serif">
                             {slides[index].title}
                         </h2>
                     </motion.div>
                 </div>
 
-               
+                {/* Indicadores laterales */}
                 <div className="absolute right-6 bottom-12 flex flex-col gap-2">
                     {slides.map((_, i) => (
                         <div
